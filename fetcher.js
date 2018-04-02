@@ -3,6 +3,7 @@ const jar = request.jar();
 
 function print_help() {
     console.log('Usage: node fetcher <stock symbol> <start period (unix timestamp)> <end period (unix timestamp)>');
+    process.exit(128);
 }
 
 // check arguments
@@ -50,6 +51,7 @@ request(`https://finance.yahoo.com/quote/${symbol}/history`, { jar }, (error, re
     }, (error, response, body) => {
         if (error) {
             console.error('Failed to fetch CSV from Yahoo! server:', error.message);
+            process.exit(128);
             return;
         }
         
