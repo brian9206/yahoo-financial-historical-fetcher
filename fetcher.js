@@ -1,8 +1,9 @@
+const fs = require('fs');
 const request = require('request');
 const jar = request.jar();
 
 function print_help() {
-    console.log('Usage: node fetcher <stock symbol> <start period (unix timestamp)> <end period (unix timestamp)>');
+    console.log('Usage: node fetcher <stock symbol> <start period (unix timestamp)> <end period (unix timestamp)> [output file name]');
     process.exit(128);
 }
 
@@ -15,6 +16,7 @@ if (process.argv.length < 5) {
 const symbol = process.argv[2];
 const period1 = parseInt(process.argv[3]);
 const period2 = parseInt(process.argv[4]);
+const file = process.argv[5] ? fs.openSync(process.argv[5], 'w') : null;
 
 if (isNaN(period1) || isNaN(period2)) {
     print_help();
@@ -71,9 +73,15 @@ request(`https://finance.yahoo.com/quote/${symbol}/history`, { jar }, (error, re
             data[0] = date.getFullYear() + ',' + (date.getMonth() + 1) + ',' + date.getDate();
             
             // use stdout to keep data unformatted
-            process.stdout.write(data.join(',') + '\n');
+            const output = data.join(',') + '\n';
+            
+            if (file != null) {
+                fs.writeSync(file, output);
+            }
+            
+            process.stdout.write(output);
         }
-        
+
         process.exit(0);
     });
 });
