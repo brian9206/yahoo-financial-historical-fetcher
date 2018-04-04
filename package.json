@@ -12,7 +12,7 @@
   "dependencies": {
     "request": "^2.85.0"
   },
-  "scripts" {
+  "scripts": {
     "start": "node fetcher"
   }
 }
