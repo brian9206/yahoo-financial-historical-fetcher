@@ -35,7 +35,7 @@ request(`https://finance.yahoo.com/quote/${symbol}/history`, { jar }, (error, re
     const match = body.match(/"CrumbStore":{"crumb":"([0-9A-Za-z.-]+)"}/);
     
     if (!match || match.length < 2) {
-        console.error('Yahoo! server does not respond with a correct format of HTML.', body);
+        console.error('Yahoo! server does not respond with a correct format of HTML.');
         process.exit(128);
         return;
     }
